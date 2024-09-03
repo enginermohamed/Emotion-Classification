@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emotion Classification Using LSTM</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<style>
+ body {
+       background-repeat: no-repeat;
+       background-attached:fixed;
+       background-size:cover;
+       background-image:url({{url_for('static',filename='builtin/emotions.jpg')}})
+       }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    h1 {
+        color: #00FF00; /* Set your desired heading color */
+    }
+
+    .form-control {
+        background-color: #ffffff; /* Set your desired textarea background color */
+    }
+
+    /* Change the color of the label */
+    label {
+        color: #FF00FF; /* Set the label color to white */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Set your desired button background color */
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0069d9; /* Set your desired button hover background color */
+        border-color: #0062cc;
+    }
+
+    .alert-success {
+        background-color: #d4edda; /* Set your desired success alert background color */
+        color: #155724; /* Set your desired success alert text color */
+        border-color: #c3e6cb;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da; /* Set your desired danger alert background color */
+        color: #721c24; /* Set your desired danger alert text color */
+        border-color: #f5c6cb;
+    }
+</style>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Emotion Classification</h1>
+        <form method="POST" action="{{ url_for('analyze_emotion') }}" onsubmit="return validateForm()">
+            <div class="form-group">
+                <!-- Add a class to the label for CSS styling -->
+                <label for="comment" class="text-white">Enter your comment:</label>
+                <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Analyze</button>
+        </form>
+
+        {% if sentiment is defined %}
+            <div class="mt-4">
+                {% if sentiment == 0 %}
+                    <div class="alert alert-success" role="alert">Anger 😡🤬👺</div>
+                {% elif sentiment == 1 %}
+                    <div class="alert alert-success" role="alert">Fear 😨😱😟</div>
+                {% elif sentiment == 2 %}
+                    <div class="alert alert-success" role="alert">You Are Happy 🥰😍😊</div>
+                {% elif sentiment == 3 %}
+                    <div class="alert alert-success" role="alert">Love  💖❤️💕</div>
+                {% elif sentiment == 4 %}
+                    <div class="alert alert-success" role="alert">Sadness 😒😭😔</div>
+                {% else %}
+                    <div class="alert alert-danger" role="alert">Surprise 😮💁‍♀️🎊🎉</div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function validateForm() {
+        var comment = document.getElementById("comment").value;
+        if (comment === "") {
+            alert("Please enter your comment.");
+            return false;
+        } else if (!isNaN(comment)) {
+            // Alert with icon for numbers not allowed
+            alert("🚫 Numbers are not allowed in the comment.");
+            return false;
+        }
+        return true;
+    }
+</script>
